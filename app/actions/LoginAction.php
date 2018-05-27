@@ -10,11 +10,19 @@ use Zend\Diactoros\Response\EmptyResponse;
 
 final class LoginAction
 {
+    /**
+     * @var Authorization
+     */
+    private $autorization;
+
+    public function __construct(Authorization $autorization)
+    {
+        $this->autorization = $autorization;
+    }
+
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $autorization = new Authorization();
-
-        if ($autorization->authorizeByRequest($request)) {
+        if ($this->autorization->authorizeByRequest($request)) {
             return $this->authorized();
         }
 

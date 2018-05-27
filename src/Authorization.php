@@ -14,9 +14,9 @@ final class Authorization
      */
     private $db;
 
-    public function __construct()
+    public function __construct(PDO $db)
     {
-        $this->db = new \PDO('sqlite:' . APP_DIR . '/database/db.sqlite');
+        $this->db = $db;
     }
 
     public function authorizeByRequest(ServerRequestInterface $request): bool

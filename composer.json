@@ -12,10 +12,11 @@
     ],
     "require": {
         "php": ">=7.0",
-        "ramsey/uuid": "^3.0@dev",
         "aura/router": "^3.1",
+        "npm-asset/holderjs": "*",
+        "zendframework/zend-config-aggregator": "^1.0",
         "zendframework/zend-diactoros": "^1.6",
-        "npm-asset/holderjs": "*"
+        "zendframework/zend-servicemanager": "^3.3"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",

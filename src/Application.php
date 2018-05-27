@@ -5,10 +5,10 @@ namespace src;
 use Aura\Router\Map;
 use Aura\Router\Route;
 use Aura\Router\RouterContainer;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\ServerRequestFactory;
 
 final class Application
 {
@@ -20,13 +20,15 @@ final class Application
      * @var ServerRequestInterface
      */
     private $request;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-    public function __construct(ServerRequestInterface $request = null)
+    public function __construct(ContainerInterface $container, ServerRequestInterface $request = null)
     {
-        if (null === $request) {
-            $this->request = ServerRequestFactory::fromGlobals();
-        }
-
+        $this->container = $container;
+        $this->request = $request;
         $this->routerContainer = new RouterContainer();
     }
 
@@ -50,8 +52,7 @@ final class Application
                 $request = $request->withAttribute($attribute, $value);
             }
 
-            $handlerClass = $route->handler;
-            $action = new $handlerClass();
+            $action = $this->container->get($route->handler);
 
             return $action($request);
         } catch (\LogicException $e){
