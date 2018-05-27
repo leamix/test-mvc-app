@@ -3,7 +3,6 @@
 namespace src;
 
 use app\models\User;
-use PDO;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Authorization
@@ -11,7 +10,7 @@ final class Authorization
     const COOKIENAME = 'TestAuth';
 
     /**
-     * @var PDO
+     * @var DbManager
      */
     private $db;
     /**
@@ -19,25 +18,19 @@ final class Authorization
      */
     private $applicationUser;
 
-    public function __construct(PDO $db, ApplicationUser $applicationUser)
+    public function __construct(DbManager $db, ApplicationUser $applicationUser)
     {
         $this->db = $db;
         $this->applicationUser = $applicationUser;
     }
 
-    public function authorizeByRequest(ServerRequestInterface $request): bool
+    public function authorize(ServerRequestInterface $request): bool
     {
-        if ($this->isAuthorized($request)) {
-            return true;
-        }
-
         $username = $request->getServerParams()['PHP_AUTH_USER'] ?? '';
         $password = $request->getServerParams()['PHP_AUTH_PW'] ?? '';
 
-        if ($user = $this->findUser($username, $password)) {
+        if ($user = $this->findUserByLoginAndPass($username, $password)) {
             $this->applicationUser->setInstance($user);
-
-            setcookie(self::COOKIENAME, $username, 0);
 
             return true;
         }
@@ -45,11 +38,9 @@ final class Authorization
         return false;
     }
 
-    public function isAuthorized(ServerRequestInterface $request): bool
+    public function isAuthorized(): bool
     {
-        $cookieParams = $request->getCookieParams();
-
-        return array_key_exists(self::COOKIENAME, $cookieParams);
+        return !$this->applicationUser->isGuest();
     }
 
     /**
@@ -57,7 +48,7 @@ final class Authorization
      * @param string $pass
      * @return User|false
      */
-    private function findUser(string $login, string $pass)
+    private function findUserByLoginAndPass(string $login, string $pass)
     {
         if (empty($login) || empty($pass)) {
             return false;

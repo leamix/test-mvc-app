@@ -4,9 +4,9 @@ namespace app\actions;
 
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use src\Authorization;
 use Zend\Diactoros\Response\EmptyResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 
 final class LoginAction
 {
@@ -20,24 +20,12 @@ final class LoginAction
         $this->autorization = $autorization;
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(): ResponseInterface
     {
-        if ($this->autorization->authorizeByRequest($request)) {
-            return $this->authorized();
+        if ($this->autorization->isAuthorized()) {
+            return new RedirectResponse('/');
         }
 
-        return $this->unAuthorized();
-    }
-
-    private function authorized(): EmptyResponse
-    {
-        return (new EmptyResponse())
-            ->withStatus(302)
-            ->withHeader('Location', '/');
-    }
-
-    private function unAuthorized(): EmptyResponse
-    {
         return (new EmptyResponse())
             ->withStatus(401)
             ->withHeader('WWW-Authenticate', 'Basic realm=Restricted area');

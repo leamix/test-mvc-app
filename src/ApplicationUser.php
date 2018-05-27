@@ -25,4 +25,20 @@ final class ApplicationUser
 
         $this->instance = $instance;
     }
+
+    /**
+     * @return bool
+     */
+    public function isGuest(): bool
+    {
+        return null === $this->instance;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->instance ? (bool)$this->instance->is_admin : false;
+    }
 }

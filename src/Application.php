@@ -54,6 +54,10 @@ final class Application
     {
         try {
             $request = $this->request;
+            /** @var Authorization $auth */
+            $auth = $this->container->get(Authorization::class);
+            $auth->authorize($request);
+
             $route = $this->getMatchingRoute();
 
             foreach ($route->attributes as $attribute => $value) {
