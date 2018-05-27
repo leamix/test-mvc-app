@@ -3,11 +3,13 @@
 use src\Application;
 use Zend\Diactoros\Response\SapiEmitter;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+define('APP_DIR', dirname(__DIR__));
+
+require APP_DIR . '/vendor/autoload.php';
 
 $app = new Application();
 
-require dirname(__DIR__) . '/app/config/routes.php';
+require APP_DIR . '/app/config/routes.php';
 
 $response = $app->run();
 
