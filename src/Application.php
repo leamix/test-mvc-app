@@ -24,20 +24,14 @@ final class Application
      * @var ContainerInterface
      */
     private $container;
-    /**
-     * @var ApplicationUser
-     */
-    private $applicationUser;
 
     public function __construct(
         ContainerInterface $container,
-        ApplicationUser $applicationUser,
-        ServerRequestInterface $request = null
+        ServerRequestInterface $request
     ) {
         $this->container = $container;
         $this->request = $request;
         $this->routerContainer = new RouterContainer();
-        $this->applicationUser = $applicationUser;
     }
 
     public function getRequest(): ServerRequestInterface
@@ -90,6 +84,14 @@ final class Application
      */
     public function getUser(): ApplicationUser
     {
-        return $this->applicationUser;
+        return $this->container->get(ApplicationUser::class);
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
     }
 }

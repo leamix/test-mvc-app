@@ -5,14 +5,27 @@ namespace app\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use src\View;
 use Zend\Diactoros\Response\HtmlResponse;
 
-final class TaskEditAction
+final class TaskUpdateAction
 {
+    /**
+     * @var View
+     */
+    private $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $taskId = $request->getAttribute('id');
 
-        return new HtmlResponse('Task edit page ' . $taskId . PHP_EOL);
+        return new HtmlResponse($this->view->render('update', [
+            'taskId' => $taskId,
+        ]));
     }
 }

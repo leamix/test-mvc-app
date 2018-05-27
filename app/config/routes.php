@@ -15,8 +15,8 @@ $routes->get(
 );
 
 $routes->get(
-    'index-with-page',
-    '/page/{page}',
+    'tasks',
+    '/tasks/{page}',
     actions\IndexAction::class
 )
     ->tokens(['page' => '\d+']);
