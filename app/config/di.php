@@ -2,6 +2,7 @@
 
 use Psr\Container\ContainerInterface;
 use src\Application;
+use src\ApplicationUser;
 use Zend\Diactoros\ServerRequestFactory;
 
 return [
@@ -13,6 +14,7 @@ return [
             Application::class => function (ContainerInterface $container) {
                 return new Application(
                     $container,
+                    $container->get(ApplicationUser::class),
                     ServerRequestFactory::fromGlobals()
                 );
             },
@@ -20,6 +22,9 @@ return [
                 $dsn = $container->get('config')['db']['dsn'];
 
                 return new PDO($dsn);
+            },
+            ApplicationUser::class => function () {
+                return new ApplicationUser();
             }
         ],
     ],

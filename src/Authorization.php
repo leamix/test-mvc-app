@@ -2,6 +2,7 @@
 
 namespace src;
 
+use app\models\User;
 use PDO;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -13,10 +14,15 @@ final class Authorization
      * @var PDO
      */
     private $db;
+    /**
+     * @var ApplicationUser
+     */
+    private $applicationUser;
 
-    public function __construct(PDO $db)
+    public function __construct(PDO $db, ApplicationUser $applicationUser)
     {
         $this->db = $db;
+        $this->applicationUser = $applicationUser;
     }
 
     public function authorizeByRequest(ServerRequestInterface $request): bool
@@ -28,7 +34,9 @@ final class Authorization
         $username = $request->getServerParams()['PHP_AUTH_USER'] ?? '';
         $password = $request->getServerParams()['PHP_AUTH_PW'] ?? '';
 
-        if ($this->findUser($username, $password)) {
+        if ($user = $this->findUser($username, $password)) {
+            $this->applicationUser->setInstance($user);
+
             setcookie(self::COOKIENAME, $username, 0);
 
             return true;
@@ -47,7 +55,7 @@ final class Authorization
     /**
      * @param string $login
      * @param string $pass
-     * @return array|false
+     * @return User|false
      */
     private function findUser(string $login, string $pass)
     {
@@ -61,6 +69,6 @@ final class Authorization
             'pass' => $pass,
         ]);
 
-        return $query->fetch();
+        return $query->fetchObject(User::class);
     }
 }

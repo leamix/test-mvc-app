@@ -24,12 +24,20 @@ final class Application
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var ApplicationUser
+     */
+    private $applicationUser;
 
-    public function __construct(ContainerInterface $container, ServerRequestInterface $request = null)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        ApplicationUser $applicationUser,
+        ServerRequestInterface $request = null
+    ) {
         $this->container = $container;
         $this->request = $request;
         $this->routerContainer = new RouterContainer();
+        $this->applicationUser = $applicationUser;
     }
 
     public function getRequest(): ServerRequestInterface
@@ -71,5 +79,13 @@ final class Application
         }
 
         throw new \LogicException('No matching route found');
+    }
+
+    /**
+     * @return ApplicationUser
+     */
+    public function getUser(): ApplicationUser
+    {
+        return $this->applicationUser;
     }
 }
