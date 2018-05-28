@@ -54,7 +54,7 @@ final class Authorization
             return false;
         }
 
-        $query = $this->db->prepare('SELECT * FROM users WHERE username = :login AND password = :pass');
+        $query = $this->db->prepare('SELECT * FROM user WHERE username = :login AND password = :pass');
         $query->execute([
             'login' => $login,
             'pass' => $pass,

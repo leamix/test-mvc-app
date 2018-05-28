@@ -36,8 +36,8 @@ $routes->get(
 
 $routes->route(
     'task-edit',
-    '/tasks/{id}/edit',
-    actions\TaskViewAction::class
+    '/tasks/update/{id}',
+    actions\TaskUpdateAction::class
 )
     ->tokens(['id' => '\d+'])
     ->allows(['GET', 'POST']);

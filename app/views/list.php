@@ -2,14 +2,13 @@
 /**
  * @var \src\View $this
  */
-
 ?>
 
 <?php $this->extend('layouts/navbar'); ?>
 
 <?php $this->addParam('title', 'Index page'); ?>
 
-<main role="main">
+<div role="main" class="pb-2">
 
     <div class="album py-5">
         <div class="container">
@@ -22,8 +21,8 @@
                             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/1">View</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/update/1">Edit</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
                             </div>
@@ -37,8 +36,8 @@
                             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/1">View</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/update/1">Edit</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
                             </div>
@@ -52,8 +51,8 @@
                             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/1">View</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/task/update/1">Edit</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
                             </div>
@@ -64,4 +63,4 @@
         </div>
     </div>
 
-</main>
+</div>

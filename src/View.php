@@ -40,15 +40,24 @@ final class View
     public function render(string $name, array $params = []): string
     {
         $filePath = $this->path . '/' . $name . '.php';
-
-        ob_start();
-        extract($params, EXTR_OVERWRITE);
+        $level = ob_get_level();
 
         $this->parentView = null;
 
-        require $filePath;
+        try {
+            ob_start();
+            extract($params, EXTR_OVERWRITE);
 
-        $content = ob_get_clean();
+            require $filePath;
+
+            $content = ob_get_clean();
+        } catch (\Throwable $e) {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+
+            throw $e;
+        }
 
         if ($this->parentView) {
             return $this->render($this->parentView, \array_merge($params, [
@@ -130,6 +139,20 @@ final class View
         return $widget->run();
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function encode(string $string): string
+    {
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
     private function hasBlock($name): bool
     {
         return array_key_exists($name, $this->blocks);
