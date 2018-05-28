@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use src\DbManager;
 use src\View;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 
 final class TaskCreateAction
 {
@@ -37,6 +38,8 @@ final class TaskCreateAction
             $task->email = $data['email'];
             $task->text = $data['text'];
             $this->save($task);
+
+            return new RedirectResponse('/tasks/view/' . $this->db->lastInsertId());
         }
 
         return new HtmlResponse($this->view->render('create', [

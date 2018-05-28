@@ -16,7 +16,7 @@ $routes->get(
 
 $routes->get(
     'tasks',
-    '/tasks/{page}',
+    '/page/{page}',
     actions\IndexAction::class
 )
     ->tokens(['page' => '\d+']);
@@ -44,7 +44,7 @@ $routes->route(
 
 $routes->get(
     'task-view',
-    '/tasks/{id}',
+    '/tasks/view/{id}',
     actions\TaskViewAction::class
 )
     ->tokens(['id' => '\d+']);
