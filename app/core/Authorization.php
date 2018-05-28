@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\models\User;
+use app\repositories\UserRepository;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Authorization
@@ -10,17 +11,17 @@ final class Authorization
     const COOKIENAME = 'TestAuth';
 
     /**
-     * @var DbManager
+     * @var UserRepository
      */
-    private $db;
+    private $userRepository;
     /**
      * @var ApplicationUser
      */
     private $applicationUser;
 
-    public function __construct(DbManager $db, ApplicationUser $applicationUser)
+    public function __construct(UserRepository $userRepository, ApplicationUser $applicationUser)
     {
-        $this->db = $db;
+        $this->userRepository = $userRepository;
         $this->applicationUser = $applicationUser;
     }
 
@@ -49,13 +50,7 @@ final class Authorization
             return false;
         }
 
-        $query = $this->db->prepare('SELECT * FROM user WHERE username = :login AND password = :pass');
-        $query->execute([
-            'login' => $login,
-            'pass' => $pass,
-        ]);
-
-        return $query->fetchObject(User::class);
+        return $this->userRepository->findByLoginAndPass($login, $pass);
     }
 
     public function isAuthorized(): bool
