@@ -1,11 +1,11 @@
 <?php
 
+use app\core\Application;
+use app\core\ApplicationUser;
+use app\core\DbManager;
+use app\core\View;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use src\Application;
-use src\ApplicationUser;
-use src\DbManager;
-use src\View;
 use Zend\Diactoros\ServerRequestFactory;
 
 return [
@@ -37,6 +37,6 @@ return [
         ],
         'invokables' => [
             ApplicationUser::class,
-        ]
+        ],
     ],
 ];

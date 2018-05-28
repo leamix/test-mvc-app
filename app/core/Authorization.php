@@ -1,6 +1,6 @@
 <?php
 
-namespace src;
+namespace app\core;
 
 use app\models\User;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,11 +38,6 @@ final class Authorization
         return false;
     }
 
-    public function isAuthorized(): bool
-    {
-        return !$this->applicationUser->isGuest();
-    }
-
     /**
      * @param string $login
      * @param string $pass
@@ -61,5 +56,10 @@ final class Authorization
         ]);
 
         return $query->fetchObject(User::class);
+    }
+
+    public function isAuthorized(): bool
+    {
+        return !$this->applicationUser->isGuest();
     }
 }

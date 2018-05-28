@@ -1,6 +1,6 @@
 <?php
 
-namespace src;
+namespace app\core;
 
 use Aura\Router\Map;
 use Aura\Router\Route;
@@ -61,9 +61,9 @@ final class Application
             $action = $this->container->get($route->handler);
 
             return $action($request);
-        } catch (\LogicException $e){
+        } catch (\LogicException $e) {
             return new HtmlResponse('Undefined page', 404);
-        } catch (\Throwable $e){
+        } catch (\Throwable $e) {
             return new HtmlResponse('Site error', 500);
         }
     }

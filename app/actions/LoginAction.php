@@ -2,9 +2,8 @@
 
 namespace app\actions;
 
-
+use app\core\Authorization;
 use Psr\Http\Message\ResponseInterface;
-use src\Authorization;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 

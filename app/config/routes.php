@@ -3,7 +3,7 @@
 use app\actions;
 
 /**
- * @var $app \src\Application
+ * @var $app \app\core\Application
  */
 
 $routes = $app->getRouterContainerMap();
@@ -19,7 +19,7 @@ $routes->get(
     '/page/{page}',
     actions\IndexAction::class
 )
-    ->tokens(['page' => '\d+']);
+       ->tokens(['page' => '\d+']);
 
 $routes->get(
     'login',
@@ -32,19 +32,19 @@ $routes->get(
     '/tasks/create',
     actions\TaskCreateAction::class
 )
-    ->allows(['GET', 'POST']);
+       ->allows(['GET', 'POST']);
 
 $routes->route(
     'task-edit',
     '/tasks/update/{id}',
     actions\TaskUpdateAction::class
 )
-    ->tokens(['id' => '\d+'])
-    ->allows(['GET', 'POST']);
+       ->tokens(['id' => '\d+'])
+       ->allows(['GET', 'POST']);
 
 $routes->get(
     'task-view',
     '/tasks/view/{id}',
     actions\TaskViewAction::class
 )
-    ->tokens(['id' => '\d+']);
+       ->tokens(['id' => '\d+']);

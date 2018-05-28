@@ -2,10 +2,9 @@
 
 namespace app\actions;
 
-
+use app\core\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use src\View;
 use Zend\Diactoros\Response\HtmlResponse;
 
 final class TaskUpdateAction

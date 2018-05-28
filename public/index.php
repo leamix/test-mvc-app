@@ -1,6 +1,6 @@
 <?php
 
-use src\Application;
+use app\core\Application;
 use Zend\Diactoros\Response\SapiEmitter;
 
 define('APP_DIR', dirname(__DIR__));

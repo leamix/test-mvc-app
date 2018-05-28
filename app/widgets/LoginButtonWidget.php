@@ -2,8 +2,8 @@
 
 namespace app\widgets;
 
-use src\ApplicationUser;
-use src\WidgetInterface;
+use app\core\ApplicationUser;
+use app\core\WidgetInterface;
 
 final class LoginButtonWidget implements WidgetInterface
 {

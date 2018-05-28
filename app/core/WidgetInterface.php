@@ -1,6 +1,6 @@
 <?php
 
-namespace src;
+namespace app\core;
 
 interface WidgetInterface
 {

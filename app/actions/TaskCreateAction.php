@@ -2,12 +2,11 @@
 
 namespace app\actions;
 
-
+use app\core\DbManager;
+use app\core\View;
 use app\models\Task;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use src\DbManager;
-use src\View;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 
