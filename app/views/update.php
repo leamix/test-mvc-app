@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \src\View $this
+ * @var \app\core\View $this
  */
 
 ?>
