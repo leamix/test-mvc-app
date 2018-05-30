@@ -49,11 +49,11 @@ final class UserRepository
      */
     public function findByLoginAndPass(string $login, string $pass)
     {
-        $sql = 'SELECT * FROM user WHERE username = :login AND password = :pass';
+        $sql = 'SELECT * FROM user WHERE username = :login AND pass_hash = :hash';
 
         $data = $this->db->queryWithParams($sql, [
             'login' => $login,
-            'pass' => $pass,
+            'hash' => md5($pass),
         ]);
 
         if (!$data) {
