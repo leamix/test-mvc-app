@@ -7,13 +7,33 @@ final class DbManager extends \PDO
     /**
      * @param string $sql
      * @param array $params
-     * @return array|null
+     * @return \PDOStatement
      */
-    public function queryWithParams(string $sql, array $params = [])
+    public function prepareWithParams(string $sql, array $params = []): \PDOStatement
     {
         $query = $this->prepare($sql);
         $query->execute($params);
 
-        return $query->fetch(self::FETCH_ASSOC) ?: null;
+        return $query;
+    }
+
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return array|null
+     */
+    public function fetchOne(string $sql, array $params = [])
+    {
+        return $this->prepareWithParams($sql, $params)->fetch(self::FETCH_ASSOC);
+    }
+
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return array|null
+     */
+    public function fetchAll(string $sql, array $params = [])
+    {
+        return $this->prepareWithParams($sql, $params)->fetchAll(self::FETCH_ASSOC);
     }
 }

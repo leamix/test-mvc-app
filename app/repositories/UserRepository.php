@@ -31,7 +31,7 @@ final class UserRepository
     {
         $sql = 'SELECT * FROM user WHERE id = :id';
 
-        $data = $this->db->queryWithParams($sql, [
+        $data = $this->db->fetchOne($sql, [
             'id' => $id,
         ]);
 
@@ -51,7 +51,7 @@ final class UserRepository
     {
         $sql = 'SELECT * FROM user WHERE username = :login AND pass_hash = :hash';
 
-        $data = $this->db->queryWithParams($sql, [
+        $data = $this->db->fetchOne($sql, [
             'login' => $login,
             'hash' => md5($pass),
         ]);
