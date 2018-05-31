@@ -25,7 +25,7 @@ final class TaskRepository
      */
     public function findById(int $id)
     {
-        $task = R::load('task', $id);
+        $task = R::findOne('task', 'id = ?', [$id]);
 
         return $task ? $this->hydrator->hydrate($task->export(), Task::class) : null;
     }
@@ -64,7 +64,7 @@ final class TaskRepository
     public function create(Task $task): int
     {
         $newTask = R::dispense('task');
-        $newTask->import((array)$task);
+        $newTask->import(array_filter((array)$task));
 
         return (int)R::store($newTask);
     }

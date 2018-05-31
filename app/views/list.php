@@ -24,8 +24,8 @@
                             <p class="card-text"><?= $task->text ?></p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a class="btn btn-sm btn-outline-secondary" href="/task/<?= $task->id ?>">View</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="/task/update/<?= $task->id ?>">Edit</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/tasks/<?= $task->id ?>">View</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/tasks/update/<?= $task->id ?>">Edit</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
                             </div>

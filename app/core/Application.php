@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use Aura\Router\Exception\RouteNotFound;
 use Aura\Router\Map;
 use Aura\Router\Route;
 use Aura\Router\RouterContainer;
@@ -66,7 +67,7 @@ final class Application
             $action = $this->container->get($route->handler);
 
             return $action($request);
-        } catch (\LogicException $e) {
+        } catch (RouteNotFound $e) {
             return new HtmlResponse('Undefined page', 404);
         } catch (\Throwable $e) {
             return new HtmlResponse('Site error', 500);
@@ -81,7 +82,7 @@ final class Application
             return $route;
         }
 
-        throw new \LogicException('No matching route found');
+        throw new RouteNotFound('No matching route found');
     }
 
     /**
