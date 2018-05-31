@@ -2,11 +2,10 @@
 
 namespace app\repositories;
 
-use app\core\DbManager;
+use app\core\Hydrator;
 use app\models\Task;
 use RedBeanPHP\OODBBean;
 use RedBeanPHP\R;
-use samdark\hydrator\Hydrator;
 
 final class TaskRepository
 {

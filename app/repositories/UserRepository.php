@@ -4,7 +4,7 @@ namespace app\repositories;
 
 use app\models\User;
 use RedBeanPHP\R;
-use samdark\hydrator\Hydrator;
+use app\core\Hydrator;
 
 final class UserRepository
 {

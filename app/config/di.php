@@ -3,6 +3,7 @@
 use app\core\Application;
 use app\core\ApplicationUser;
 use app\core\DbManager;
+use app\core\Hydrator;
 use app\core\View;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,11 +24,6 @@ return [
                     $container->get(ServerRequestInterface::class)
                 );
             },
-            DbManager::class => function (ContainerInterface $container) {
-                $dsn = $container->get('config')['db']['dsn'];
-
-                return new DbManager($dsn);
-            },
             View::class => function (ContainerInterface $container) {
                 return new View(
                     $container->get('config')['viewPath'],
@@ -37,6 +33,7 @@ return [
         ],
         'invokables' => [
             ApplicationUser::class,
+            Hydrator::class,
         ],
     ],
 ];
