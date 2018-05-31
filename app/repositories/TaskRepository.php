@@ -4,22 +4,19 @@ namespace app\repositories;
 
 use app\core\DbManager;
 use app\models\Task;
+use RedBeanPHP\OODBBean;
+use RedBeanPHP\R;
 use samdark\hydrator\Hydrator;
 
 final class TaskRepository
 {
     /**
-     * @var DbManager
-     */
-    private $db;
-    /**
      * @var Hydrator
      */
     private $hydrator;
 
-    public function __construct(DbManager $db, Hydrator $hydrator)
+    public function __construct(Hydrator $hydrator)
     {
-        $this->db = $db;
         $this->hydrator = $hydrator;
     }
 
@@ -29,17 +26,9 @@ final class TaskRepository
      */
     public function findById(int $id)
     {
-        $sql = 'SELECT * FROM task WHERE id = :id';
+        $task = R::load('task', $id);
 
-        $data = $this->db->fetchOne($sql, [
-            'id' => $id,
-        ]);
-
-        if (!$data) {
-            return null;
-        }
-
-        return $this->hydrator->hydrate($data, Task::class);
+        return $task ? $this->hydrator->hydrate($task->export(), Task::class) : null;
     }
 
     /**
@@ -49,36 +38,35 @@ final class TaskRepository
      */
     public function findAll(int $limit = null, int $offset = null): array
     {
-        $sql = 'SELECT * FROM task';
+        $sql = '';
         $params = [];
 
         if ($limit) {
             $sql .= ' LIMIT :limit';
-            $params['limit'] = $limit;
+            $params[':limit'] = $limit;
         }
 
         if ($offset) {
             $sql .= ' OFFSET :offset';
-            $params['offset'] = $offset;
+            $params[':offset'] = $offset;
         }
 
-        $data = $this->db->fetchAll($sql, $params);
+        $tasks = R::findAll('task', $sql, $params);
 
-        if (!$data) {
-            return [];
-        }
-
-        return array_map(function ($datum) {
-            return $this->hydrator->hydrate($datum, Task::class);
-        }, $data);
+        return array_map(function (OODBBean $datum) {
+            return $this->hydrator->hydrate($datum->export(), Task::class);
+        }, $tasks);
     }
 
+    /**
+     * @param Task $task
+     * @return int
+     */
     public function create(Task $task): int
     {
-        $sql = '';
-        $params = $this->hydrator->extract($task);
-        $this->db->prepareWithParams($sql, $params);
+        $newTask = R::dispense('task');
+        $newTask->import((array)$task);
 
-        return (int)$this->db->lastInsertId();
+        return (int)R::store($newTask);
     }
 }

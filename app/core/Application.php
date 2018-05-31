@@ -8,6 +8,7 @@ use Aura\Router\RouterContainer;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RedBeanPHP\R;
 use Zend\Diactoros\Response\HtmlResponse;
 
 final class Application
@@ -48,6 +49,10 @@ final class Application
     {
         try {
             $request = $this->request;
+
+            R::addDatabase('db', $this->container->get('config')['db']['dsn']);
+            R::selectDatabase( 'db' );
+
             /** @var Authorization $auth */
             $auth = $this->container->get(Authorization::class);
             $auth->authorize($request);
