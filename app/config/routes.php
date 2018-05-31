@@ -8,43 +8,19 @@ use app\actions;
 
 $routes = $app->getRouterContainerMap();
 
-$routes->get(
-    'index',
-    '/',
-    actions\IndexAction::class
-);
+$routes->get('index', '/', actions\IndexAction::class);
 
-$routes->get(
-    'tasks',
-    '/page/{page}',
-    actions\IndexAction::class
-)
+$routes->get('tasks', '/page/{page}', actions\IndexAction::class)
        ->tokens(['page' => '\d+']);
 
-$routes->get(
-    'login',
-    '/login',
-    actions\LoginAction::class
-);
+$routes->get('login', '/login', actions\LoginAction::class);
 
-$routes->get(
-    'task-create',
-    '/tasks/create',
-    actions\TaskCreateAction::class
-)
+$routes->get('task-create', '/tasks/create', actions\TaskCreateAction::class)
        ->allows(['GET', 'POST']);
 
-$routes->route(
-    'task-edit',
-    '/tasks/update/{id}',
-    actions\TaskUpdateAction::class
-)
+$routes->route('task-edit', '/tasks/update/{id}', actions\TaskUpdateAction::class)
        ->tokens(['id' => '\d+'])
        ->allows(['GET', 'POST']);
 
-$routes->get(
-    'task-view',
-    '/tasks/view/{id}',
-    actions\TaskViewAction::class
-)
+$routes->get('task-view', '/tasks/view/{id}', actions\TaskViewAction::class)
        ->tokens(['id' => '\d+']);

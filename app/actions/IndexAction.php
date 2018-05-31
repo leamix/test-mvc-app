@@ -40,6 +40,10 @@ final class IndexAction
             $this->pagination->getOffset()
         );
 
+        if (!$tasks) {
+            throw new PageNotFoundException();
+        }
+
         return new HtmlResponse($this->view->render('list', [
             'pagination' => $this->pagination,
             'tasks' => $tasks,

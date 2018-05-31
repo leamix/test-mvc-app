@@ -2,9 +2,9 @@
 
 namespace app\actions;
 
+use app\core\exceptions\PageNotFoundException;
 use app\core\View;
 use app\repositories\TaskRepository;
-use Aura\Router\Exception\RouteNotFound;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -32,7 +32,7 @@ final class TaskViewAction
         $task = $this->taskRepository->findById($taskId);
 
         if (!$task) {
-            throw new RouteNotFound();
+            throw new PageNotFoundException();
         }
 
         return new HtmlResponse($this->view->render('view', [

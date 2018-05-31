@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\actions\ErrorAction;
+use app\core\exceptions\PageNotFoundException;
 use Aura\Router\Exception\RouteNotFound;
 use Aura\Router\Map;
 use Aura\Router\Route;
@@ -73,7 +74,9 @@ final class Application
 
             return $action($request);
         } catch (RouteNotFound $e) {
-            return $this->container->get(ErrorAction::class)($e, 'Undefined page', 404);
+            return $this->container->get(ErrorAction::class)($e, 'Undefined route', 404);
+        } catch (PageNotFoundException $e) {
+            return $this->container->get(ErrorAction::class)($e, $e->getMessage(), 404);
         } catch (\Throwable $e) {
             return $this->container->get(ErrorAction::class)($e);
         }
