@@ -2,13 +2,17 @@
 
 namespace app\core\exceptions;
 
-final class PageNotFoundException extends \Exception
+
+use Throwable;
+
+final class UnauthorizedException extends \Exception
 {
     public function __construct(
-        string $message = 'Page not found',
+        string $message = 'Not authorized',
         int $code = 0,
-        \Throwable $previous = null
+        Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }
+
 }

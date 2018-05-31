@@ -4,6 +4,7 @@ namespace app\core;
 
 use app\actions\ErrorAction;
 use app\core\exceptions\PageNotFoundException;
+use app\core\exceptions\UnauthorizedException;
 use Aura\Router\Exception\RouteNotFound;
 use Aura\Router\Map;
 use Aura\Router\Route;
@@ -81,6 +82,8 @@ final class Application
             return $this->container->get(ErrorAction::class)($e, 'Undefined route', 404);
         } catch (PageNotFoundException $e) {
             return $this->container->get(ErrorAction::class)($e, $e->getMessage(), 404);
+        } catch (UnauthorizedException $e) {
+            return $this->container->get(ErrorAction::class)($e, $e->getMessage(), 403);
         } catch (\Throwable $e) {
             return $this->container->get(ErrorAction::class)($e);
         }
@@ -89,12 +92,17 @@ final class Application
     private function getMatchingRoute(): Route
     {
         $matcher = $this->routerContainer->getMatcher();
+        $route = $matcher->match($this->request);
 
-        if ($route = $matcher->match($this->request)) {
-            return $route;
+        if (!$route) {
+            throw new RouteNotFound('No matching route found');
         }
 
-        throw new RouteNotFound('No matching route found');
+        if ($route->auth && !($route->auth)($this->container->get(ApplicationUser::class))) {
+            throw new UnauthorizedException();
+        }
+
+        return $route;
     }
 
     /**

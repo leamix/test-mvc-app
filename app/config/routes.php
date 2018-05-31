@@ -20,6 +20,9 @@ $routes->get('task-create', '/tasks/create', actions\TaskCreateAction::class)
 
 $routes->route('task-edit', '/tasks/update/{id}', actions\TaskUpdateAction::class)
        ->tokens(['id' => '\d+'])
+       ->auth(function (\app\core\ApplicationUser $user) {
+           return $user->isAdmin();
+       })
        ->allows(['GET', 'POST']);
 
 $routes->get('task-view', '/tasks/view/{id}', actions\TaskViewAction::class)
