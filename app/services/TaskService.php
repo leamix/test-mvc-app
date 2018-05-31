@@ -49,7 +49,7 @@ final class TaskService
     {
         $task = new Task();
 
-        $this->hydrator->hydrate(array_filter($data), Task::class);
+        $this->hydrator->hydrateObject(array_filter($data), $task);
         $task->created_at = time();
 
         $task->id = $this->taskRepository->create($task);
