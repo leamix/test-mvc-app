@@ -31,6 +31,10 @@ final class Application
      * @var bool
      */
     private $debug;
+    /**
+     * @var mixed
+     */
+    private $action;
 
     public function __construct(
         ContainerInterface $container,
@@ -70,9 +74,9 @@ final class Application
                 $request = $request->withAttribute($attribute, $value);
             }
 
-            $action = $this->container->get($route->handler);
+            $this->action = $this->container->get($route->handler);
 
-            return $action($request);
+            return ($this->action)($request);
         } catch (RouteNotFound $e) {
             return $this->container->get(ErrorAction::class)($e, 'Undefined route', 404);
         } catch (PageNotFoundException $e) {
@@ -115,5 +119,13 @@ final class Application
     public function isDebug(): bool
     {
         return $this->debug;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAction()
+    {
+        return $this->action;
     }
 }

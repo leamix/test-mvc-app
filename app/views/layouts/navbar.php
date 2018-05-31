@@ -5,6 +5,7 @@
  */
 
 use app\widgets\LoginButtonWidget;
+use app\widgets\CreateButtonWidget;
 
 ?>
 
@@ -18,8 +19,8 @@ use app\widgets\LoginButtonWidget;
             </a>
 
             <div class="align-items-right">
-                <a href="/tasks/create" class="btn btn-primary my-2">Create an article</a>
-                <?= $this->widget(LoginButtonWidget::class) ?>
+                <?php $this->widget(CreateButtonWidget::class) ?>
+                <?php $this->widget(LoginButtonWidget::class) ?>
             </div>
         </div>
     </div>
