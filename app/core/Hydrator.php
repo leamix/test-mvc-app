@@ -33,10 +33,10 @@ final class Hydrator
         $reflection = $this->getReflectionClass($className);
 
         foreach ($data as $key => $value) {
-            if ($reflection->hasProperty($value)) {
-                $property = $reflection->getProperty($value);
+            if ($reflection->hasProperty($key)) {
+                $property = $reflection->getProperty($key);
                 $property->setAccessible(true);
-                $property->setValue($object, $data[$key]);
+                $property->setValue($object, $value);
             }
         }
 
