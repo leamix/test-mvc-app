@@ -4,6 +4,10 @@ namespace app\models;
 
 final class Task
 {
+    const STATUS_CREATED = 'Created';
+    const STATUS_IN_PROGRESS = 'In progress';
+    const STATUS_DONE = 'Done';
+
     /**
      * @var int
      */

@@ -1,8 +1,11 @@
 <?php
 /**
  * @var \app\core\View $this
- * @var \app\models\Task $task
+ * @var Task $task
  */
+
+use app\models\Task;
+
 ?>
 
 <?php $this->extend('layouts/navbar'); ?>
@@ -18,25 +21,6 @@
         <div class="row">
             <div class="col-md-12">
                 <form class="needs-validation" method="post" action="/tasks/update/<?= $task->id ?>" novalidate>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="username">Username</label>
-                            <div class="input-group">
-                                <input name="username" type="text" class="form-control" id="username" placeholder="Username" value="<?= $task->username ?>" required>
-                                <div class="invalid-feedback" style="width: 100%;">
-                                    Your username is required.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="email">Email</label>
-                            <input name="email" type="email" class="form-control" id="email" placeholder="you@example.com" value="<?= $task->email ?>" required>
-                            <div class="invalid-feedback">
-                                Please enter a valid email address for shipping updates.
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="mb-3">
                         <label for="tasktext">Task</label>
                         <textarea name="text" class="form-control" id="tasktext" required><?= $task->text ?></textarea>
@@ -48,9 +32,9 @@
                     <div class="mb-3">
                         <label for="state">Status</label>
                         <select class="custom-select d-block w-100" id="status" required>
-                            <option value="created">Created</option>
-                            <option value="inprocess">In process</option>
-                            <option value="done">Done</option>
+                            <option <?= ($task->status === Task::STATUS_CREATED ? 'selected' : '') ?> value="<?= Task::STATUS_CREATED ?>">Created</option>
+                            <option <?= ($task->status === Task::STATUS_IN_PROGRESS ? 'selected' : '') ?> value="<?= Task::STATUS_IN_PROGRESS ?>">In process</option>
+                            <option <?= ($task->status === Task::STATUS_DONE ? 'selected' : '') ?> value="<?= Task::STATUS_DONE ?>">Done</option>
                         </select>
                         <div class="invalid-feedback">
                             Please provide a valid status.
