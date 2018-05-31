@@ -76,4 +76,16 @@ final class TaskRepository
 
         return (int)R::store($newTask);
     }
+
+    /**
+     * @param Task $task
+     * @return void
+     */
+    public function update(Task $task)
+    {
+        $editableTask = R::load('task', $task->id);
+        $editableTask->import(array_filter((array)$task));
+
+        R::store($editableTask);
+    }
 }

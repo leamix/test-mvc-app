@@ -7,12 +7,12 @@
 
 <?php $this->extend('layouts/navbar'); ?>
 
-<?php $this->addParam('title', 'Create page'); ?>
+<?php $this->addParam('title', 'Create a task'); ?>
 
 <div role="main" class="pb-5">
     <div class="container">
         <div class="py-5 text-left">
-            <h2>Create an article</h2>
+            <h2>Create a task</h2>
         </div>
 
         <div class="row">
@@ -54,7 +54,7 @@
 
                     <hr class="mb-4">
 
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Create a task</button>
                 </form>
             </div>
         </div>

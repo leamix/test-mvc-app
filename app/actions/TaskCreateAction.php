@@ -4,7 +4,7 @@ namespace app\actions;
 
 use app\core\View;
 use app\models\Task;
-use app\repositories\TaskRepository;
+use app\services\TaskService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -17,35 +17,28 @@ final class TaskCreateAction
      */
     private $view;
     /**
-     * @var TaskRepository
+     * @var TaskService
      */
-    private $taskRepository;
+    private $taskService;
 
-    public function __construct(View $view, TaskRepository $taskRepository)
+    public function __construct(View $view, TaskService $taskService)
     {
         $this->view = $view;
-        $this->taskRepository = $taskRepository;
+        $this->taskService = $taskService;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $task = new Task();
-
         if ($request->getMethod() === 'POST') {
-            $data = $request->getParsedBody();
+            $attributes = $request->getParsedBody();
 
-            $task->username = $data['username'];
-            $task->email = $data['email'];
-            $task->text = $data['text'];
-            $task->created_at = time();
+            $task = $this->taskService->create($attributes);
 
-            $id = $this->taskRepository->create($task);
-
-            return new RedirectResponse('/tasks/view/' . $id);
+            return new RedirectResponse('/tasks/view/' . $task->id);
         }
 
         return new HtmlResponse($this->view->render('create', [
-            'model' => $task,
+            'task' => $task ?? new Task(),
         ]));
     }
 }
