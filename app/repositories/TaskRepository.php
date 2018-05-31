@@ -58,6 +58,14 @@ final class TaskRepository
     }
 
     /**
+     * @return int
+     */
+    public function countAll(): int
+    {
+        return (int)R::count('task');
+    }
+
+    /**
      * @param Task $task
      * @return int
      */
