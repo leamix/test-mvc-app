@@ -26,6 +26,10 @@ final class Application
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var bool
+     */
+    private $debug;
 
     public function __construct(
         ContainerInterface $container,
@@ -34,6 +38,7 @@ final class Application
         $this->container = $container;
         $this->request = $request;
         $this->routerContainer = new RouterContainer();
+        $this->debug = $this->container->get('config')['debug'];
     }
 
     public function getRequest(): ServerRequestInterface
@@ -68,9 +73,11 @@ final class Application
 
             return $action($request);
         } catch (RouteNotFound $e) {
-            return new HtmlResponse('Undefined page', 404);
+            return new HtmlResponse('<h1>Undefined page</h1>', 404);
         } catch (\Throwable $e) {
-            return new HtmlResponse('Site error', 500);
+            $info = $this->debug ? '<pre>' . print_r($e, true) . '</pre>' : '';
+
+            return new HtmlResponse('<h1>Site error</h1>' . $info, 500);
         }
     }
 
