@@ -2,9 +2,9 @@
 
 namespace app\actions;
 
-use app\core\DbManager;
 use app\core\View;
 use app\models\Task;
+use app\repositories\TaskRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -17,14 +17,14 @@ final class TaskCreateAction
      */
     private $view;
     /**
-     * @var DbManager
+     * @var TaskRepository
      */
-    private $db;
+    private $taskRepository;
 
-    public function __construct(View $view, DbManager $db)
+    public function __construct(View $view, TaskRepository $taskRepository)
     {
         $this->view = $view;
-        $this->db = $db;
+        $this->taskRepository = $taskRepository;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -36,29 +36,13 @@ final class TaskCreateAction
             $task->username = $data['username'];
             $task->email = $data['email'];
             $task->text = $data['text'];
-            $this->save($task);
+            $id = $this->taskRepository->create($task);
 
-            return new RedirectResponse('/tasks/view/' . $this->db->lastInsertId());
+            return new RedirectResponse('/tasks/view/' . $id);
         }
 
         return new HtmlResponse($this->view->render('create', [
             'model' => $task,
         ]));
-    }
-
-    /**
-     * @param Task $task
-     * @return bool
-     */
-    private function save(Task $task): bool
-    {
-        $query = $this->db->prepare('INSERT INTO task (username, email, text) VALUES(:username, :email, :text)');
-        $query->execute([
-            'username' => $task->username,
-            'email' => $task->email,
-            'text' => $task->text,
-        ]);
-
-        return true;
     }
 }

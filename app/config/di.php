@@ -2,7 +2,6 @@
 
 use app\core\Application;
 use app\core\ApplicationUser;
-use app\core\DbManager;
 use app\core\Hydrator;
 use app\core\View;
 use Psr\Container\ContainerInterface;
