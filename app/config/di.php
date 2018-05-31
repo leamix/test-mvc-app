@@ -30,16 +30,11 @@ return [
                     $container
                 );
             },
-            Pagination::class => function (ContainerInterface $container) {
-                return new Pagination(
-                    $container->get('config')['pageSize'],
-                    $container->get(ServerRequestInterface::class)
-                );
-            },
         ],
         'invokables' => [
             ApplicationUser::class,
             Hydrator::class,
+            Pagination::class,
         ],
     ],
 ];

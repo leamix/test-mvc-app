@@ -3,8 +3,6 @@
 namespace app\core;
 
 
-use Psr\Http\Message\ServerRequestInterface;
-
 final class Pagination
 {
     /**
@@ -16,22 +14,20 @@ final class Pagination
      */
     private $pageSize;
     /**
-     * @var ServerRequestInterface
+     * @var int
      */
-    private $request;
-
-    public function __construct(int $pageSize, ServerRequestInterface $request)
-    {
-        $this->pageSize = $pageSize;
-        $this->request = $request;
-    }
+    private $currentPage = 1;
 
     /**
+     * @param int $pageSize
      * @param int $total
+     * @param int $currentPage
      */
-    public function setItemsTotal(int $total)
+    public function __construct(int $pageSize, int $total, int $currentPage)
     {
+        $this->pageSize = $pageSize;
         $this->itemsTotalCount = $total;
+        $this->currentPage = $currentPage;
     }
 
     /**
@@ -39,7 +35,7 @@ final class Pagination
      */
     public function getCurrentPage(): int
     {
-        return $this->request->getAttribute('page', 1);
+        return $this->currentPage;
     }
 
     /**
@@ -55,9 +51,35 @@ final class Pagination
      */
     public function getOffset(): int
     {
-        $pageSize = $this->getPageSize();
-        $page = $this->getCurrentPage();
+        return $this->pageSize * ($this->currentPage - 1);
+    }
 
-        return $pageSize * ($page - 1);
+    /**
+     * @return int
+     */
+    public function getMaxPageNumber(): int
+    {
+        return (int)\ceil($this->itemsTotalCount / $this->pageSize);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNextPage()
+    {
+        $next = $this->currentPage + 1;
+        $max = $this->getMaxPageNumber();
+
+        return $next > $max ? null : $next;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPreviousPage()
+    {
+        $prev = $this->currentPage - 1;
+
+        return $prev < 1 ? null : $prev;
     }
 }

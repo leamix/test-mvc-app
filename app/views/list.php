@@ -2,8 +2,11 @@
 /**
  * @var \app\core\View $this
  * @var \app\models\Task[] $tasks
- * @var int $page
+ * @var \app\core\Pagination $pagination
  */
+
+use app\widgets\PaginationWidget;
+
 ?>
 
 <?php $this->extend('layouts/navbar'); ?>
@@ -24,7 +27,7 @@
                             <p class="card-text"><?= $task->text ?></p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a class="btn btn-sm btn-outline-secondary" href="/tasks/<?= $task->id ?>">View</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/tasks/view/<?= $task->id ?>">View</a>
                                     <a class="btn btn-sm btn-outline-secondary" href="/tasks/update/<?= $task->id ?>">Edit</a>
                                 </div>
                                 <small class="text-muted">9 mins</small>
@@ -34,6 +37,13 @@
                 </div>
                 <?php endforeach; ?>
 
+            </div>
+            <div class="row">
+                <nav class="col-md-12" aria-label="pagination">
+                    <?php $this->widget(PaginationWidget::class, [
+                        'pagination' => $pagination,
+                    ]) ?>
+                </nav>
             </div>
         </div>
     </div>

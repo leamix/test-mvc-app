@@ -2,6 +2,8 @@
 
 namespace app\actions;
 
+use app\core\Application;
+use app\core\exceptions\PageNotFoundException;
 use app\core\Pagination;
 use app\core\View;
 use app\repositories\TaskRepository;
@@ -20,24 +22,31 @@ final class IndexAction
      */
     private $taskRepository;
     /**
-     * @var Pagination
+     * @var Application
      */
-    private $pagination;
+    private $application;
 
-    public function __construct(View $view, TaskRepository $taskRepository, Pagination $pagination)
-    {
+    public function __construct(
+        View $view,
+        TaskRepository $taskRepository,
+        Application $application
+    ) {
         $this->view = $view;
         $this->taskRepository = $taskRepository;
-        $this->pagination = $pagination;
+        $this->application = $application;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pagination->setItemsTotal($this->taskRepository->countAll());
+        $pagination = new Pagination(
+            $this->application->getContainer()->get('config')['pageSize'],
+            $this->taskRepository->countAll(),
+            $request->getAttribute('page', 1)
+        );
 
         $tasks = $this->taskRepository->findAll(
-            $this->pagination->getPageSize(),
-            $this->pagination->getOffset()
+            $pagination->getPageSize(),
+            $pagination->getOffset()
         );
 
         if (!$tasks) {
@@ -45,7 +54,7 @@ final class IndexAction
         }
 
         return new HtmlResponse($this->view->render('list', [
-            'pagination' => $this->pagination,
+            'pagination' => $pagination,
             'tasks' => $tasks,
         ]));
     }
