@@ -25,7 +25,16 @@ final class Task
      */
     public $picture_path;
     /**
+     * @var int
+     */
+    public $created_at;
+    /**
      * @var string
      */
     public $status;
+
+    public function getCreatedAt()
+    {
+        return date('d.m.Y', (int)$this->created_at);
+    }
 }

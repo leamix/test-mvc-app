@@ -33,9 +33,12 @@ final class TaskCreateAction
 
         if ($request->getMethod() === 'POST') {
             $data = $request->getParsedBody();
+
             $task->username = $data['username'];
             $task->email = $data['email'];
             $task->text = $data['text'];
+            $task->created_at = time();
+
             $id = $this->taskRepository->create($task);
 
             return new RedirectResponse('/tasks/view/' . $id);
