@@ -18,12 +18,12 @@ final class LoginButtonWidget implements WidgetInterface
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    public function run(): string
+    public function run(array $params = []): string
     {
         if ($this->user->isGuest()) {
-            return require APP_DIR . '/app/views/parts/login_btn.php';
+            return require APP_DIR . '/app/views/parts/loginBtn.php';
         }
 
         return '';

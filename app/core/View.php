@@ -138,15 +138,16 @@ final class View
 
     /**
      * @param string $class
+     * @param array $params
      * @return string
      */
-    public function widget(string $class): string
+    public function widget(string $class, array $params = []): string
     {
         $widget = $this->container->get($class);
 
         \assert($widget instanceof WidgetInterface);
 
-        return $widget->run();
+        return $widget->run($params);
     }
 
     /**
