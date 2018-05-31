@@ -2,6 +2,7 @@
 
 namespace app\actions;
 
+use app\core\Pagination;
 use app\core\View;
 use app\repositories\TaskRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -18,22 +19,29 @@ final class IndexAction
      * @var TaskRepository
      */
     private $taskRepository;
+    /**
+     * @var Pagination
+     */
+    private $pagination;
 
-    public function __construct(View $view, TaskRepository $taskRepository)
+    public function __construct(View $view, TaskRepository $taskRepository, Pagination $pagination)
     {
         $this->view = $view;
         $this->taskRepository = $taskRepository;
+        $this->pagination = $pagination;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $page = $request->getAttribute('page', 1) - 1;
-        $pageSize = 3;
+        $this->pagination->setItemsTotal($this->taskRepository->countAll());
 
-        $tasks = $this->taskRepository->findAll($pageSize, $pageSize * $page);
+        $tasks = $this->taskRepository->findAll(
+            $this->pagination->getPageSize(),
+            $this->pagination->getOffset()
+        );
 
         return new HtmlResponse($this->view->render('list', [
-            'page' => $page,
+            'pagination' => $this->pagination,
             'tasks' => $tasks,
         ]));
     }

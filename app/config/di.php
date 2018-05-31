@@ -3,6 +3,7 @@
 use app\core\Application;
 use app\core\ApplicationUser;
 use app\core\Hydrator;
+use app\core\Pagination;
 use app\core\View;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,6 +28,12 @@ return [
                 return new View(
                     $container->get('config')['viewPath'],
                     $container
+                );
+            },
+            Pagination::class => function (ContainerInterface $container) {
+                return new Pagination(
+                    $container->get('config')['pageSize'],
+                    $container->get(ServerRequestInterface::class)
                 );
             },
         ],
