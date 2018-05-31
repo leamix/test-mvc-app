@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\actions\ErrorAction;
 use Aura\Router\Exception\RouteNotFound;
 use Aura\Router\Map;
 use Aura\Router\Route;
@@ -10,7 +11,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RedBeanPHP\R;
-use Zend\Diactoros\Response\HtmlResponse;
 
 final class Application
 {
@@ -73,11 +73,9 @@ final class Application
 
             return $action($request);
         } catch (RouteNotFound $e) {
-            return new HtmlResponse('<h1>Undefined page</h1>', 404);
+            return $this->container->get(ErrorAction::class)($e, 'Undefined page', 404);
         } catch (\Throwable $e) {
-            $info = $this->debug ? '<pre>' . print_r($e, true) . '</pre>' : '';
-
-            return new HtmlResponse('<h1>Site error</h1>' . $info, 500);
+            return $this->container->get(ErrorAction::class)($e);
         }
     }
 
@@ -106,5 +104,13 @@ final class Application
     public function getContainer(): ContainerInterface
     {
         return $this->container;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDebug(): bool
+    {
+        return $this->debug;
     }
 }
