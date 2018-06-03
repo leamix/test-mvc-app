@@ -28,8 +28,6 @@ use app\widgets\SingleTaskViewWidget;
                             <a href="<?= $sort->getQueryString($option, $sort->isOrderBy($option)) ?>"><?= $option ?></a>
                             <?php if ($sort->isOrderBy($option)): ?>
                             <span>&nbsp;<?= $sort->getDirection() > 0 ? '&uarr;' : '&darr;' ?></span>
-                            <?php else: ?>
-                            <span>&nbsp;<?= $sort->getDirection() < 0 ? '&uarr;' : '&darr;' ?></span>
                             <?php endif; ?>
                         </li>
                         <?php endforeach; ?>
