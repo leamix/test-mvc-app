@@ -3,7 +3,7 @@
 namespace app\actions;
 
 
-use app\core\Application;
+use app\core\Settings;
 use app\core\View;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -15,14 +15,14 @@ final class ErrorAction
      */
     private $view;
     /**
-     * @var Application
+     * @var Settings
      */
-    private $application;
+    private $settings;
 
-    public function __construct(View $view, Application $application)
+    public function __construct(View $view, Settings $settings)
     {
         $this->view = $view;
-        $this->application = $application;
+        $this->settings = $settings;
     }
 
     public function __invoke(
@@ -32,7 +32,7 @@ final class ErrorAction
     ): ResponseInterface {
         $response = new HtmlResponse($this->view->render('error', [
             'message' => $message,
-            'info' => $this->application->isDebug() ? print_r($e, true) : null,
+            'info' => $this->settings->isDebug ? print_r($e, true) : null,
         ]));
 
         return $response->withStatus($status);

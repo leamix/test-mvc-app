@@ -1,10 +1,8 @@
 <?php
 
 return [
-    'debug' => true,
+    'isDebug' => true,
     'pageSize' => 3,
     'viewPath' => APP_DIR . '/app/views',
-    'db' => [
-        'dsn' => 'sqlite:' . APP_DIR . '/database/db.sqlite',
-    ],
+    'dbDsn' => 'sqlite:' . APP_DIR . '/database/db.sqlite',
 ];

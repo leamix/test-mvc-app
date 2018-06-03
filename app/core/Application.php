@@ -29,22 +29,23 @@ final class Application
      */
     private $container;
     /**
-     * @var bool
-     */
-    private $debug;
-    /**
      * @var mixed
      */
     private $action;
+    /**
+     * @var Settings
+     */
+    private $settings;
 
     public function __construct(
         ContainerInterface $container,
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
+        Settings $settings
     ) {
         $this->container = $container;
         $this->request = $request;
         $this->routerContainer = new RouterContainer();
-        $this->debug = $this->container->get('config')['debug'];
+        $this->settings = $settings;
     }
 
     public function getRequest(): ServerRequestInterface
@@ -62,7 +63,7 @@ final class Application
         try {
             $request = $this->request;
 
-            R::addDatabase('db', $this->container->get('config')['db']['dsn']);
+            R::addDatabase('db', $this->settings->dbDsn);
             R::selectDatabase( 'db' );
 
             /** @var Authorization $auth */
@@ -126,7 +127,7 @@ final class Application
      */
     public function isDebug(): bool
     {
-        return $this->debug;
+        return $this->settings->isDebug;
     }
 
     /**
