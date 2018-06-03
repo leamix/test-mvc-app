@@ -47,3 +47,7 @@ footer p {
 .border-top-gray { border-top-color: #adb5bd; }
 
 .lh-condensed { line-height: 1.25; }
+
+.list-inline-item.active a {
+	font-weight: bold;
+}

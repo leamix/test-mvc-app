@@ -3,6 +3,7 @@
 namespace app\repositories;
 
 use app\core\Hydrator;
+use app\core\SortInterface;
 use app\models\Task;
 use RedBeanPHP\OODBBean;
 use RedBeanPHP\R;
@@ -31,14 +32,24 @@ final class TaskRepository
     }
 
     /**
+     * @param SortInterface $sort
      * @param int $limit
      * @param int $offset
      * @return Task[]
      */
-    public function findAll(int $limit = null, int $offset = null): array
+    public function findAll(SortInterface $sort = null, int $limit = null, int $offset = null): array
     {
         $sql = '';
         $params = [];
+
+        if ($sort) {
+            $sql .= ' ORDER BY ' . $sort->getOrderBy();
+            if ($sort->getDirection() > 0) {
+                $sql .= ' ASC';
+            } elseif ($sort->getDirection() < 0) {
+                $sql .= ' DESC';
+            }
+        }
 
         if ($limit) {
             $sql .= ' LIMIT :limit';

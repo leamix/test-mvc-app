@@ -5,6 +5,7 @@ namespace app\actions;
 use app\core\exceptions\PageNotFoundException;
 use app\core\Pagination;
 use app\core\Settings;
+use app\core\TaskSort;
 use app\core\View;
 use app\repositories\TaskRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -44,7 +45,14 @@ final class IndexAction
             $request->getAttribute('page', 1)
         );
 
+        $queryParams = $request->getQueryParams();
+        $sort = new TaskSort(
+            $queryParams[TaskSort::QUERY_ORDER] ?? TaskSort::SORT_BY_DATE,
+            $queryParams[TaskSort::QUERY_DIR] ?? TaskSort::SORT_DESC
+        );
+
         $tasks = $this->taskRepository->findAll(
+            $sort,
             $pagination->getPageSize(),
             $pagination->getOffset()
         );
@@ -56,6 +64,7 @@ final class IndexAction
         return new HtmlResponse($this->view->render('list', [
             'pagination' => $pagination,
             'tasks' => $tasks,
+            'sort' => $sort,
         ]));
     }
 }

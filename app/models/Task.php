@@ -31,14 +31,14 @@ final class Task
     /**
      * @var int
      */
-    public $created_at;
+    public $date;
     /**
      * @var string
      */
     public $status;
 
-    public function getCreatedAt()
+    public function getDate()
     {
-        return date('d.m.Y', (int)$this->created_at);
+        return date('d.m.Y', (int)$this->date);
     }
 }
