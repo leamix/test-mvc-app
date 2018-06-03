@@ -34,6 +34,6 @@ switch ($task->status) {
             <a class="btn btn-sm btn-outline-secondary" href="/tasks/update/<?= $task->id ?>">Edit</a>
             <?php endif; ?>
         </div>
-        <small class="text-muted"><?= $task->username ?></small>
+        <small class="text-muted"><?= $task->username ?> | <?= $task->email ?></small>
     </div>
 </div>
