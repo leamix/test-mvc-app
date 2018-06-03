@@ -54,6 +54,7 @@ use app\widgets\SingleTaskViewWidget;
                 <nav class="col-md-12" aria-label="pagination">
                     <?php $this->widget(PaginationWidget::class, [
                         'pagination' => $pagination,
+                        'sort' => $sort,
                     ]) ?>
                 </nav>
             </div>

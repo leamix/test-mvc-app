@@ -47,5 +47,5 @@ interface SortInterface
      * @param bool $opposite
      * @return string
      */
-    public function getQueryString(string $option, bool $opposite = true): string;
+    public function getQueryString(string $option = null, bool $opposite = true): string;
 }

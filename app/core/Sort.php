@@ -82,11 +82,11 @@ abstract class Sort implements SortInterface
      * @param bool $opposite
      * @return string
      */
-    public function getQueryString(string $option, bool $opposite = true): string
+    public function getQueryString(string $option = null, bool $opposite = true): string
     {
         return
             '?' .
-            self::QUERY_ORDER . '=' . $option . '&' .
+            self::QUERY_ORDER . '=' . ($option ?? $this->orderBy) . '&' .
             self::QUERY_DIR . '=' . ($opposite ? $this->getOppositeDirection() : $this->direction);
     }
 
