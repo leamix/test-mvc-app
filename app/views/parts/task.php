@@ -1,27 +1,33 @@
 <?php
 /**
- * @var \app\models\Task $task
+ * @var Task $task
  * @var bool $showViewBtn
  * @var bool $showEditBtn
  */
 
+use app\models\Task;
+
 switch ($task->status) {
-    case \app\models\Task::STATUS_DONE:
+    case Task::STATUS_DONE:
         $statusClass = 'badge-success';
         break;
 
-    case \app\models\Task::STATUS_IN_PROGRESS:
+    case Task::STATUS_IN_PROGRESS:
         $statusClass = 'badge-info';
         break;
 
-    case \app\models\Task::STATUS_CREATED:
+    case Task::STATUS_CREATED:
     default:
         $statusClass = 'badge-secondary';
         break;
 }
 ?>
 
-<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap" />
+<?php if ($task->picture_path): ?>
+<img class="card-img-top" src="<?= $task->picture_path ?>" alt="" />
+<?php else: ?>
+<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="" />
+<?php endif; ?>
 <div class="card-body">
     <span class="badge <?= $statusClass ?>"><?= $task->status ?></span>
     <p class="card-text"><?= $task->text ?></p>
